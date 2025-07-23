@@ -1,0 +1,58 @@
+/* Grid Layout for Dining Tables */
+.dining-table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid columns */
+    gap: 20px; /* Space between grid items */
+    padding: 20px;
+}
+
+/* Styling for Each Table Box */
+.table-box {
+    background-color: #99c8f6; /* Light background color */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(184, 114, 114, 0.1); /* Light shadow */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect on Each Table Box */
+.table-box:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+}
+
+/* Table Number Styling */
+.table-box h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Table Capacity Styling */
+.table-box p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Availability Status Styling */
+.text-success {
+    color: #28a745; /* Green for available */
+}
+
+.text-danger {
+    color: #dc3545; /* Red for occupied */
+}
+
+/* Ensure the layout stays clean on mobile */
+@media (max-width: 768px) {
+    .dining-table-grid {
+        grid-template-columns: 1fr 1fr; /* Two columns on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .dining-table-grid {
+        grid-template-columns: 1fr; /* One column on very small screens */
+    }
+}
