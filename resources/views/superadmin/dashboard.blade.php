@@ -77,9 +77,39 @@
                 </div>
                 <!-- Widgets End -->
 
+                <!-- Widgets End -->
+
+                <!-- Button Container Start -->
+                <div class="container">
+                    <div class="card p-4 shadow-sm mt-4"> <!-- This line changed -->
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="{{ route('roles.create') }}" class="btn btn-primary flex-fill">
+                                <i class="ph ph-user-plus me-1"></i> Add Role
+                            </a>
+                            <a href="{{ route('rooms.create') }}" class="btn btn-success flex-fill">
+                                <i class="ph ph-house-line me-1"></i> Add Room
+                            </a>
+                            <a href="{{ route('bookings.create') }}" class="btn btn-info flex-fill">
+                                <i class="ph ph-calendar-plus me-1"></i> Add Booking
+                            </a>
+                            <a href="{{ route('superadmin.guests.create') }}" class="btn btn-warning flex-fill">
+                                <i class="ph ph-user-circle-plus me-1"></i> Add Guest
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button Container End -->
+
+
+
+
+
 
 
             </div>
+
+
+
 
             <div class="col-lg-3">
                 <!-- Calendar Start -->

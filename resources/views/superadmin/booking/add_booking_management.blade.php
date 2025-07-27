@@ -41,26 +41,45 @@
                     @csrf
                     <div class="row g-20">
 
-                        <div class="col-sm-6">
+                        <!-- ✅ Guest Search Box with Live Filter -->
+                        <div class="col-sm-6 position-relative">
                             <label class="h5 mb-8 fw-semibold font-heading">Guest</label>
-                            <select name="guest_id" class="form-select" required>
-                                <option disabled selected>Select Guest</option>
-                                @foreach ($guests as $guest)
-                                    <option value="{{ $guest->id }}">{{ $guest->full_name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="guestSearchInput" class="form-control" placeholder="Select Guest"
+                                autocomplete="off">
+
+                            <div id="guestDropdown" class="bg-white border rounded mt-1 position-absolute w-100 shadow-sm"
+                                style="max-height: 200px; overflow-y: auto; z-index: 1050; display: none;">
+                                @forelse ($guests as $guest)
+                                    <div class="guest-item px-3 py-2 border-bottom" data-id="{{ $guest->id }}">
+                                        {{ $guest->full_name }}</div>
+                                @empty
+                                    <div class="px-3 py-2 text-muted">No guests found</div>
+                                @endforelse
+                            </div>
+
+                            <input type="hidden" name="guest_id" id="selectedGuestId" required>
                         </div>
 
-                        <div class="col-sm-6">
+                        <!-- Room -->
+                        <div class="col-sm-6 position-relative">
                             <label class="h5 mb-8 fw-semibold font-heading">Room</label>
-                            <select name="room_id" class="form-select" required>
-                                <option disabled selected>Select Room</option>
-                                @foreach ($rooms as $room)
-                                    <option value="{{ $room->id }}">{{ $room->room_number }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="roomSearchInput" class="form-control" placeholder="Select Room"
+                                autocomplete="off">
+
+                            <div id="roomDropdown" class="bg-white border rounded mt-1 position-absolute w-100 shadow-sm"
+                                style="max-height: 200px; overflow-y: auto; z-index: 1050; display: none;">
+                                @forelse ($rooms as $room)
+                                    <div class="room-item px-3 py-2 border-bottom" data-id="{{ $room->id }}">
+                                        {{ $room->room_number }}</div>
+                                @empty
+                                    <div class="px-3 py-2 text-muted">No rooms found</div>
+                                @endforelse
+                            </div>
+
+                            <input type="hidden" name="room_id" id="selectedRoomId" required>
                         </div>
 
+                        <!-- Booking Type -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Booking Type</label>
                             <select name="booking_type" class="form-select" required>
@@ -70,16 +89,19 @@
                             </select>
                         </div>
 
+                        <!-- Check In -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Check In</label>
                             <input type="datetime-local" name="check_in" class="form-control" required>
                         </div>
 
+                        <!-- Check Out -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Check Out</label>
                             <input type="datetime-local" name="check_out" class="form-control" required>
                         </div>
 
+                        <!-- Status -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Status</label>
                             <select name="status" class="form-select" required>
@@ -90,14 +112,14 @@
                             </select>
                         </div>
 
-
-
+                        <!-- Booking Reference -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Booking Reference</label>
                             <input type="text" name="booking_reference" class="form-control"
                                 placeholder="Auto or manual">
                         </div>
 
+                        <!-- Payment Status -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Payment Status</label>
                             <select name="payment_status" class="form-select" required>
@@ -107,18 +129,21 @@
                             </select>
                         </div>
 
+                        <!-- Total Amount -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Total Amount</label>
                             <input type="number" step="0.01" name="total_amount" class="form-control"
                                 placeholder="Total PKR">
                         </div>
 
+                        <!-- Discount -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Discount</label>
                             <input type="number" step="0.01" name="discount" class="form-control"
                                 placeholder="Discount amount">
                         </div>
 
+                        <!-- Payment Method -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Payment Method</label>
                             <select name="payment_method" class="form-select" required>
@@ -130,6 +155,8 @@
                                 <option value="jazzcash">JazzCash</option>
                             </select>
                         </div>
+
+                        <!-- Active -->
                         <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Active</label>
                             <select name="is_active" class="form-select" required>
@@ -138,23 +165,21 @@
                             </select>
                         </div>
 
+                        <!-- Notes -->
                         <div class="col-12">
                             <label class="h5 mb-8 fw-semibold font-heading">Notes</label>
                             <textarea name="notes" class="form-control" rows="3" placeholder="Additional info"></textarea>
                         </div>
 
+                        <!-- Cancellation Reason -->
                         <div class="col-12">
                             <label class="h5 mb-8 fw-semibold font-heading">Cancellation Reason</label>
                             <input type="text" name="cancellation_reason" class="form-control"
                                 placeholder="If cancelled">
                         </div>
 
-
-
-
                     </div>
 
-                    <!-- Footer Buttons -->
                     <div class="flex-align justify-content-end gap-8 mt-24">
                         <a href="{{ route('bookings.index') }}" class="btn btn-outline-main rounded-pill py-9">Cancel</a>
                         <button type="submit" class="btn btn-main rounded-pill py-9">Create Booking</button>
@@ -162,6 +187,102 @@
                 </form>
             </div>
         </div>
-
     </div>
+    <style>
+        .guest-item:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        .room-item:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+    </style>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            const $input = $('#guestSearchInput');
+            const $dropdown = $('#guestDropdown');
+            const $hiddenInput = $('#selectedGuestId');
+
+            $input.on('focus input', function() {
+                const search = $(this).val().toLowerCase();
+
+                let anyShown = false;
+                $('.guest-item').each(function() {
+                    const name = $(this).text().toLowerCase();
+                    if (name.includes(search)) {
+                        $(this).show();
+                        anyShown = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                if (anyShown) {
+                    $dropdown.show();
+                } else {
+                    $dropdown.hide();
+                }
+            });
+
+            $(document).on('click', '.guest-item', function() {
+                const name = $(this).text();
+                const id = $(this).data('id');
+
+                $input.val(name);
+                $hiddenInput.val(id);
+                $dropdown.hide();
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#guestSearchInput, #guestDropdown').length) {
+                    $dropdown.hide();
+                }
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            const $roomInput = $('#roomSearchInput');
+            const $roomDropdown = $('#roomDropdown');
+            const $roomHidden = $('#selectedRoomId');
+
+            $roomInput.on('focus input', function() {
+                const search = $(this).val().toLowerCase();
+                let anyMatch = false;
+
+                $('.room-item').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    if (text.includes(search)) {
+                        $(this).show();
+                        anyMatch = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                $roomDropdown.toggle(anyMatch);
+            });
+
+            $(document).on('click', '.room-item', function() {
+                const name = $(this).text();
+                const id = $(this).data('id');
+
+                $roomInput.val(name);
+                $roomHidden.val(id);
+                $roomDropdown.hide();
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#roomSearchInput, #roomDropdown').length) {
+                    $roomDropdown.hide();
+                }
+            });
+        });
+    </script>
 @endsection

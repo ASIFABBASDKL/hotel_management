@@ -15,33 +15,39 @@
             </div>
         </div>
 
-        <div class="card p-4">
-            <h5 class="mb-4">Add New Role</h5>
-            <form action="{{ route('roles.store') }}" method="POST">
-                @csrf
+        <div class="card">
+            <div class="card-header border-bottom border-gray-100 flex-align gap-8">
+                <h5 class="mb-0">Add New Role</h5>
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Role Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" required>
-                    @error('name')
-                        <span class="text-danger small">{{ $message }}</span>
-                    @enderror
-                </div>
+            <div class="card-body">
+                <form action="{{ route('roles.store') }}" method="POST">
+                    @csrf
 
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3"></textarea>
-                    @error('description')
-                        <span class="text-danger small">{{ $message }}</span>
-                    @enderror
-                </div>
+                    <div class="mb-3">
+                        <label class="h5 mb-8 fw-semibold font-heading">Role Name</label>
+                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                            required>
+                        @error('name')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Assign Permissions</label>
-                    <div class="border rounded p-3 bg-light">
+                    <div class="mb-3">
+                        <label class="h5 mb-8 fw-semibold font-heading">Description</label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3"></textarea>
+                        @error('description')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold fs-5">Assign Permissions</label>
+
                         @forelse ($groupedPermissions as $page => $permissions)
-                            <div class="mb-4">
-                                <h6 class="text-main-600 mb-2">{{ ucfirst($page) }}</h6>
+                            <div class="p-3 rounded shadow-sm mb-4"
+                                style="background-color: #fff;">
+                                <h6 class="text-main-600 mb-3">{{ ucfirst($page) }}</h6>
                                 <div class="row">
                                     @foreach ($permissions as $permission)
                                         <div class="col-md-4 mb-2">
@@ -60,11 +66,20 @@
                             <p>No permissions available.</p>
                         @endforelse
                     </div>
-                </div>
 
 
-                <button type="submit" class="btn btn-primary mt-3">Create Role</button>
-            </form>
+
+                    <button type="submit" class="btn btn-primary mt-3">Create Role</button>
+                </form>
+            </div>
         </div>
     </div>
+
+    <style>
+        .text-main-600 {
+            color: #333;
+            /* or your theme color */
+            font-weight: 600;
+        }
+    </style>
 @endsection
