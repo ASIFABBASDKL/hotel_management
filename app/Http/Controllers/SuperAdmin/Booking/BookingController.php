@@ -24,21 +24,26 @@ class BookingController extends Controller
         $rooms = Room::all();
         return view('superadmin.booking.add_booking_management', compact('guests', 'rooms'));
     }
-    public function store(Request $request)
-    {
-        $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'room_id' => 'required|exists:rooms,id',
-            'check_in' => 'required|date',
-            'check_out' => 'required|date|after:check_in',
-            'status' => 'required|in:pending,confirmed,cancelled',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'guest_id' => 'required|exists:guests,id',
+        'room_id' => 'required|exists:rooms,id',
+        'check_in' => 'required|date',
+        'check_out' => 'required|date|after:check_in',
+        'status' => 'required|in:booked,checked_in,checked_out,cancelled',
+        'booking_type' => 'required|in:walk-in,online',
+        'payment_status' => 'required|in:unpaid,partial,paid',
+        'payment_method' => 'required|in:cash,card,bank_transfer,easypaisa,jazzcash',
+        'total_amount' => 'nullable|numeric',
+        'discount' => 'nullable|numeric',
+        'is_active' => 'required|boolean',
+    ]);
 
-        Booking::create($request->all());
+    Booking::create($request->all());
 
-
-        return redirect()->back()->with('success', 'Booking created successfully!');
-    }
+    return redirect()->route('bookings.index')->with('success', 'Booking created successfully!');
+}
     public function edit($id)
     {
         $booking = Booking::findOrFail($id);

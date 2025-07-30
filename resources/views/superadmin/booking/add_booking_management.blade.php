@@ -14,11 +14,11 @@
                 </ul>
             </div>
 
-            <div class="flex-align justify-content-end gap-8">
+            {{-- <div class="flex-align justify-content-end gap-8">
                 <a href="{{ route('bookings.index') }}"
                     class="btn btn-outline-main bg-main-100 border-main-100 text-main-600 rounded-pill py-9">Cancel</a>
                 <button type="submit" form="addBookingForm" class="btn btn-main rounded-pill py-9">Save Booking</button>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Step List -->

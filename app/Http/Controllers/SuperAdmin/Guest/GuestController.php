@@ -36,7 +36,7 @@ class GuestController extends Controller
 
         Guest::create($validated);
 
-        return redirect()->back()->with('success', 'Guest added successfully.');
+        return redirect()->route('superadmin.guests.index')->with('success', 'Guest added successfully.');
     }
     public function edit($id)
     {

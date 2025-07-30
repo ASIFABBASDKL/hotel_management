@@ -15,6 +15,42 @@
             <a href="{{ route('bookings.create') }}" class="btn btn-primary btn-sm">Add Booking</a>
         </div>
 
+        <div class="card mt-24 mb-24">
+            <div class="card-body">
+                <form action="#" class="search-input-form" id="bookingFilterForm">
+
+                    <!-- Search by Status -->
+                    <div class="search-input">
+                        <select id="filterBookingStatus" class="form-control form-select h6 rounded-4 mb-0 py-6 px-8">
+                            <option value="" selected disabled>Search by Status</option>
+                            <option value="booked">Booked</option>
+                            <option value="checked_in">Checked In</option>
+                            <option value="checked_out">Checked Out</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <!-- Search by Room -->
+                    <div class="search-input">
+                        <input type="text" id="filterRoom" class="form-control h6 rounded-4 mb-0 py-6 px-8"
+                            placeholder="Search by Room">
+                    </div>
+
+                    <!-- Search by Guest Name -->
+                    <div class="search-input">
+                        <input type="text" id="filterGuestName" class="form-control h6 rounded-4 mb-0 py-6 px-8"
+                            placeholder="Search by Guest Name">
+                    </div>
+
+                    <!-- Optional Button -->
+                    <div class="search-input">
+                        <button type="button" class="btn btn-main rounded-pill py-9 w-100" disabled>Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <!-- Booking List Table -->
         <div class="card p-3">
             <table class="table table-striped">
@@ -63,4 +99,39 @@
             </table>
         </div>
     </div>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusSelect = document.getElementById('filterBookingStatus');
+        const roomInput = document.getElementById('filterRoom');
+        const guestInput = document.getElementById('filterGuestName');
+
+        const tableRows = document.querySelectorAll('table tbody tr');
+
+        function filterBookingRows() {
+            const statusVal = statusSelect.value.toLowerCase();
+            const roomVal = roomInput.value.toLowerCase();
+            const guestVal = guestInput.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                const tds = row.querySelectorAll('td');
+
+                const guestText = tds[1]?.textContent.toLowerCase() || '';
+                const roomText = tds[2]?.textContent.toLowerCase() || '';
+                const statusText = tds[5]?.textContent.toLowerCase() || ''; // ✅ Corrected index
+
+                const matchesStatus = !statusVal || statusText === statusVal;
+                const matchesRoom = roomText.includes(roomVal);
+                const matchesGuest = guestText.includes(guestVal);
+
+                row.style.display = (matchesStatus && matchesRoom && matchesGuest) ? '' : 'none';
+            });
+        }
+
+        statusSelect.addEventListener('change', filterBookingRows);
+        roomInput.addEventListener('input', filterBookingRows);
+        guestInput.addEventListener('input', filterBookingRows);
+    });
+</script>
+
 @endsection

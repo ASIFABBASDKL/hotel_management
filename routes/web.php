@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update')->middleware('permission:edit_rooms');
     Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.destroy')->middleware('permission:delete_rooms');
 
+
     // Guests
     Route::get('/superadmin/guests', [GuestController::class, 'index'])->name('superadmin.guests.index')->middleware('permission:view_guests');
     Route::get('/superadmin/guests/create', [GuestController::class, 'create'])->name('superadmin.guests.create')->middleware('permission:add_guests');

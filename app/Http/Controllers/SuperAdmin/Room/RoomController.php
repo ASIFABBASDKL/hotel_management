@@ -14,6 +14,8 @@ class RoomController extends Controller
         $rooms = Room::all();
         return view('superadmin.room.room_management', compact('rooms'));
     }
+
+
     public function create()
     {
         return view('superadmin.room.add_room');
@@ -22,25 +24,49 @@ class RoomController extends Controller
     // Store a newly created room in the database
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'room_number' => 'required|unique:rooms,room_number|max:255',
+        // Convert amenities to array before validation
+        $request->merge([
+            'amenities' => array_map('trim', explode(',', $request->input('amenities')))
+        ]);
+
+        // Debug to confirm request input — remove this after testing
+        // dd($request->all());
+
+        // Validate input
+        $validated = $request->validate([
+            'room_number' => 'required|unique:rooms|max:255',
+            'floor_number' => 'nullable|integer',
             'type' => 'required|in:Single,Deluxe,Suite',
             'price' => 'required|numeric',
             'occupancy_limit' => 'required|integer|min:1',
             'status' => 'required|in:available,occupied,maintenance',
+            'amenities' => 'nullable|array',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // Handle file upload
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        // Save room
         Room::create([
-            'room_number' => $validatedData['room_number'],
-            'type' => $validatedData['type'],
-            'price' => $validatedData['price'],
-            'occupancy_limit' => $validatedData['occupancy_limit'],
-            'status' => $validatedData['status'],
-            'amenities' => $request->amenities ?? [],
+            'room_number' => $validated['room_number'],
+            'floor_number' => $validated['floor_number'] ?? null,
+            'type' => $validated['type'],
+            'price' => $validated['price'],
+            'occupancy_limit' => $validated['occupancy_limit'],
+            'status' => $validated['status'],
+            'amenities' => $validated['amenities'] ?? [],
+            'image' => $validated['image'] ?? null,
         ]);
 
+        // Redirect to index route (not view file)
         return redirect()->route('rooms.index')->with('success', 'Room created successfully!');
     }
+
+
+
     public function edit($id)
     {
         $room = Room::findOrFail($id);
@@ -73,11 +99,11 @@ class RoomController extends Controller
 
     // Remove the specified room from the database
     public function destroy($id)
-{
-    $room = Room::findOrFail($id);
-    $room->delete();
+    {
+        $room = Room::findOrFail($id);
+        $room->delete();
 
-    return redirect()->route('rooms.index')->with('success', 'Room deleted successfully!');
-}
+        return redirect()->route('rooms.index')->with('success', 'Room deleted successfully!');
+    }
 
 }
