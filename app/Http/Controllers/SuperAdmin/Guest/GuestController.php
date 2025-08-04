@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin\Guest;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Models\Guest;
 
 class GuestController extends Controller
@@ -73,4 +74,22 @@ class GuestController extends Controller
 
         return redirect()->back()->with('success', 'Guest deleted successfully.');
     }
+
+    public function export()
+{
+    $guests = Guest::all();
+    $csvData = "Name,Email,Phone,Address,Status\n"; // Header
+
+    foreach ($guests as $guest) {
+        $csvData .= "{$guest->name},{$guest->email},{$guest->phone},"
+                    . "{$guest->address},{$guest->status}\n";
+    }
+
+    $filename = 'guests.csv';
+
+    return Response::make($csvData, 200, [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    ]);
+}
 }

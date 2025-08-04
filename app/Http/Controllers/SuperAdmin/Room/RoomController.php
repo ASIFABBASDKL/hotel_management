@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin\Room;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class RoomController extends Controller
 {
@@ -105,5 +106,24 @@ class RoomController extends Controller
 
         return redirect()->route('rooms.index')->with('success', 'Room deleted successfully!');
     }
+
+    public function export()
+{
+    $rooms = Room::all();
+    $csvData = "Room Number,Floor Number,Type,Price,Amenities,Occupancy Limit,Status,Image\n"; // Header
+
+    foreach ($rooms as $room) {
+        $csvData .= "{$room->room_number},{$room->floor_number},{$room->type},{$room->price},"
+                    . (is_array($room->amenities) ? implode('; ', $room->amenities) : '') . ","
+                    . "{$room->occupancy_limit},{$room->status},{$room->image}\n";
+    }
+
+    $filename = 'rooms.csv';
+
+    return Response::make($csvData, 200, [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    ]);
+}
 
 }

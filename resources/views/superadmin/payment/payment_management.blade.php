@@ -12,8 +12,24 @@
                 <li><span class="text-main-600 fw-normal text-15">Payment Management</span></li>
             </ul>
         </div>
-
         <a href="{{ route('payments.create') }}" class="btn btn-primary btn-sm">Add Payment</a>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mt-24 mb-24">
+        <div class="card-body">
+            <form action="#" class="search-input-form" id="paymentFilterForm">
+                <div class="search-input">
+                    <input type="text" id="filterGuestName" class="form-control h6 rounded-4 mb-0 py-6 px-8" placeholder="Search by Guest Name">
+                </div>
+                <div class="search-input">
+                    <input type="text" id="filterPaymentMethod" class="form-control h6 rounded-4 mb-0 py-6 px-8" placeholder="Search by Method">
+                </div>
+                <div class="search-input">
+                    <button type="button" class="btn btn-main rounded-pill py-9 w-100" disabled>Search</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Payment List Table -->
@@ -64,6 +80,34 @@
             </tbody>
         </table>
     </div>
-
 </div>
+
+<!-- Filter Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const nameInput = document.getElementById('filterGuestName');
+    const methodInput = document.getElementById('filterPaymentMethod');
+    const tableRows = document.querySelectorAll('table tbody tr');
+
+    function filterRows() {
+        const nameVal = nameInput.value.toLowerCase();
+        const methodVal = methodInput.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            const tds = row.querySelectorAll('td');
+            const nameText = tds[2]?.textContent.toLowerCase() || '';   // Guest Name column
+            const methodText = tds[3]?.textContent.toLowerCase() || ''; // Payment Method column
+
+            const matchesName = nameText.includes(nameVal);
+            const matchesMethod = methodText.includes(methodVal);
+
+            row.style.display = (matchesName && matchesMethod) ? '' : 'none';
+        });
+    }
+
+    nameInput.addEventListener('input', filterRows);
+    methodInput.addEventListener('input', filterRows);
+});
+</script>
+
 @endsection

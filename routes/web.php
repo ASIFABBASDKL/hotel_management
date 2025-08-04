@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/rooms/{room}/edit', [RoomController::class, 'edit'])->name('rooms.edit')->middleware('permission:edit_rooms');
     Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update')->middleware('permission:edit_rooms');
     Route::delete('/rooms/{id}', [RoomController::class, 'destroy'])->name('rooms.destroy')->middleware('permission:delete_rooms');
+    Route::get('rooms/export', [RoomController::class, 'export'])->name('rooms.export');
 
 
     // Guests
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/superadmin/guests/edit/{id}', [GuestController::class, 'edit'])->name('superadmin.guests.edit')->middleware('permission:edit_guests');
     Route::post('/superadmin/guests/update/{id}', [GuestController::class, 'update'])->name('superadmin.guests.update')->middleware('permission:edit_guests');
     Route::delete('/superadmin/guests/delete/{id}', [GuestController::class, 'destroy'])->name('superadmin.guests.destroy')->middleware('permission:delete_guests');
+    Route::get('guests/export', [GuestController::class, 'export'])->name('guests.export');
 
     // Bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index')->middleware('permission:view_bookings');
@@ -77,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/bookings/{id}', [BookingController::class, 'update'])->name('bookings.update')->middleware('permission:edit_bookings');
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show')->middleware('permission:view_bookings');
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy')->middleware('permission:delete_bookings');
+    Route::get('bookings/export', [BookingController::class, 'export'])->name('bookings.export');
 
     // Payments
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index')->middleware('permission:view_payments');
@@ -85,4 +88,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments/{id}/edit', [PaymentController::class, 'edit'])->name('payments.edit')->middleware('permission:edit_payments');
     Route::put('/payments/{id}', [PaymentController::class, 'update'])->name('payments.update')->middleware('permission:edit_payments');
     Route::delete('/payments/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete_payments');
+
+
 });

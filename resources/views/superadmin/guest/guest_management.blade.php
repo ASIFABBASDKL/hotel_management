@@ -12,37 +12,39 @@
                     <li><span class="text-main-600 fw-normal text-15">Guest Management</span></li>
                 </ul>
             </div>
-            <a href="{{ route('superadmin.guests.create') }}" class="btn btn-primary btn-sm">
-                Add Guest
-            </a>
+            <div class="d-flex gap-3">
+                <a href="{{ route('guests.export') }}" class="btn btn-success btn-sm">Export as Excel</a>
+
+                <a href="{{ route('superadmin.guests.create') }}" class="btn btn-primary btn-sm">
+                    Add Guest
+                </a>
+            </div>
         </div>
 
-      <div class="card mt-24 mb-24">
-    <div class="card-body">
-        <form action="#" class="search-input-form" id="guestFilterForm">
+        <div class="card mt-24 mb-24">
+            <div class="card-body">
+                <form action="#" class="search-input-form" id="guestFilterForm">
 
-            <!-- Search by Guest Name -->
-            <div class="search-input">
-                <input type="text" id="filterGuestName"
-                    class="form-control h6 rounded-4 mb-0 py-6 px-8"
-                    placeholder="Search by Guest Name">
+                    <!-- Search by Guest Name -->
+                    <div class="search-input">
+                        <input type="text" id="filterGuestName" class="form-control h6 rounded-4 mb-0 py-6 px-8"
+                            placeholder="Search by Guest Name">
+                    </div>
+
+                    <!-- Search by Phone Number -->
+                    <div class="search-input">
+                        <input type="text" id="filterGuestPhone" class="form-control h6 rounded-4 mb-0 py-6 px-8"
+                            placeholder="Search by Phone Number">
+                    </div>
+
+                    <!-- Fake Search Button (optional for design only) -->
+                    <div class="search-input">
+                        <button type="button" class="btn btn-main rounded-pill py-9 w-100" disabled>Search</button>
+                    </div>
+
+                </form>
             </div>
-
-            <!-- Search by Phone Number -->
-            <div class="search-input">
-                <input type="text" id="filterGuestPhone"
-                    class="form-control h6 rounded-4 mb-0 py-6 px-8"
-                    placeholder="Search by Phone Number">
-            </div>
-
-            <!-- Fake Search Button (optional for design only) -->
-            <div class="search-input">
-                <button type="button" class="btn btn-main rounded-pill py-9 w-100" disabled>Search</button>
-            </div>
-
-        </form>
-    </div>
-</div>
+        </div>
 
 
 
@@ -103,33 +105,32 @@
 
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const nameInput = document.getElementById('filterGuestName');
-    const phoneInput = document.getElementById('filterGuestPhone');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('filterGuestName');
+            const phoneInput = document.getElementById('filterGuestPhone');
 
-    const tableRows = document.querySelectorAll('table tbody tr');
+            const tableRows = document.querySelectorAll('table tbody tr');
 
-    function filterGuestRows() {
-        const nameVal = nameInput.value.toLowerCase();
-        const phoneVal = phoneInput.value.toLowerCase();
+            function filterGuestRows() {
+                const nameVal = nameInput.value.toLowerCase();
+                const phoneVal = phoneInput.value.toLowerCase();
 
-        tableRows.forEach(row => {
-            const tds = row.querySelectorAll('td');
-            const nameText = tds[1]?.textContent.toLowerCase() || '';   // Full Name column
-            const phoneText = tds[3]?.textContent.toLowerCase() || '';  // Phone column (✅ fixed index)
+                tableRows.forEach(row => {
+                    const tds = row.querySelectorAll('td');
+                    const nameText = tds[1]?.textContent.toLowerCase() || ''; // Full Name column
+                    const phoneText = tds[3]?.textContent.toLowerCase() ||
+                    ''; // Phone column (✅ fixed index)
 
-            const matchesName = nameText.includes(nameVal);
-            const matchesPhone = phoneText.includes(phoneVal);
+                    const matchesName = nameText.includes(nameVal);
+                    const matchesPhone = phoneText.includes(phoneVal);
 
-            row.style.display = (matchesName && matchesPhone) ? '' : 'none';
+                    row.style.display = (matchesName && matchesPhone) ? '' : 'none';
+                });
+            }
+
+            nameInput.addEventListener('input', filterGuestRows);
+            phoneInput.addEventListener('input', filterGuestRows);
         });
-    }
-
-    nameInput.addEventListener('input', filterGuestRows);
-    phoneInput.addEventListener('input', filterGuestRows);
-});
-</script>
-
-
+    </script>
 @endsection
