@@ -8,6 +8,7 @@ use App\Http\Controllers\SuperAdmin\Room\RoomController;
 use App\Http\Controllers\SuperAdmin\Guest\GuestController;
 use App\Http\Controllers\SuperAdmin\Booking\BookingController;
 use App\Http\Controllers\SuperAdmin\Payment\PaymentController;
+use App\Http\Controllers\SuperAdmin\Report\ReportController;
 
 // Auth Routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
@@ -80,6 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show')->middleware('permission:view_bookings');
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy')->middleware('permission:delete_bookings');
     Route::get('bookings/export', [BookingController::class, 'export'])->name('bookings.export');
+    Route::get('/bookings/{id}/card', [BookingController::class, 'cardView'])
+        ->name('bookings.card')
+        ->middleware('permission:view_bookings');
 
     // Payments
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index')->middleware('permission:view_payments');
@@ -89,5 +93,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/payments/{id}', [PaymentController::class, 'update'])->name('payments.update')->middleware('permission:edit_payments');
     Route::delete('/payments/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete_payments');
 
+
+    // Reports Routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/generate/{type}', [ReportController::class, 'generate'])->name('reports.generate');
+    Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+    Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('reports.destroy');
+    Route::get('/reports-export', [ReportController::class, 'export'])->name('reports.export');
 
 });

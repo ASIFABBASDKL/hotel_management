@@ -8,6 +8,7 @@ use App\Models\Guest;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use SimpleSoftwareIO\QrCode\Facades\QrCode; // ✅ Add this
 
 class BookingController extends Controller
 {
@@ -100,4 +101,19 @@ class BookingController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
     }
+    public function cardView($id)
+    {
+        $booking = Booking::with(['guest', 'room'])->findOrFail($id);
+
+        // QR me multiple info encode karni hai
+        $qrData = "Booking Ref: {$booking->booking_reference}\n"
+            . "Guest: {$booking->guest->full_name}\n"
+            . "Room ID: {$booking->room->id}";
+
+        return view('superadmin.booking.booking_card', compact('booking', 'qrData'));
+    }
+
+
+
+
 }

@@ -76,20 +76,20 @@ class GuestController extends Controller
     }
 
     public function export()
-{
-    $guests = Guest::all();
-    $csvData = "Name,Email,Phone,Address,Status\n"; // Header
+    {
+        $guests = Guest::all();
+        $csvData = "Name,Email,Phone,Address,Status\n"; // Header
 
-    foreach ($guests as $guest) {
-        $csvData .= "{$guest->name},{$guest->email},{$guest->phone},"
-                    . "{$guest->address},{$guest->status}\n";
+        foreach ($guests as $guest) {
+            $csvData .= "{$guest->name},{$guest->email},{$guest->phone},"
+                . "{$guest->address},{$guest->status}\n";
+        }
+
+        $filename = 'guests.csv';
+
+        return Response::make($csvData, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
-
-    $filename = 'guests.csv';
-
-    return Response::make($csvData, 200, [
-        'Content-Type' => 'text/csv',
-        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-    ]);
-}
 }
